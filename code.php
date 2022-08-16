@@ -84,5 +84,84 @@ if(isset($_POST['save'])){
 
 
 
+if(isset($_POST['delete_player'])){
+
+    $player_id =  mysqli_real_escape_string($con, $_POST['delete_player']);
+
+    $query = "DELETE FROM players WHERE id='$player_id' ";
+
+    $query_run = mysqli_query($con, $query);
+
+    if($query_run){
+
+        $_SESSION['message'] = "Player deleted successfully";
+        header("Location: players.php");
+        exit(0);
+    }
+    else{
+        $_SESSION['message'] = "Player not deleted";
+        header("Location: player.php");
+         exit(0);
+    
+    }
+
+}
+
+
+if(isset($_POST['update_player'])){
+
+    $player_id =  mysqli_real_escape_string($con, $_POST['player_id']);
+
+    $name = mysqli_real_escape_string($con, $_POST['name']);
+    $surname = mysqli_real_escape_string($con, $_POST['surname']);
+    $country = mysqli_real_escape_string($con, $_POST['country']);
+    $tournament = mysqli_real_escape_string($con, $_POST['tournament']);
+
+    $query = "UPDATE players SET name='$name', surname='$surname', country='$country', tournament_id='$tournament' WHERE id='$player_id' ";
+
+    $query_run = mysqli_query($con, $query);
+
+    if($query_run){
+
+        $_SESSION['message'] = "Player updated successfully";
+        header("Location: players.php");
+        exit(0);
+    }
+    else{
+        $_SESSION['message'] = "Player not updated";
+        header("Location: players.php");
+         exit(0);
+    
+    }
+
+}
+
+
+if(isset($_POST['save_player'])){
+
+    $name = mysqli_real_escape_string($con, $_POST['name']);
+    $surname = mysqli_real_escape_string($con, $_POST['surname']);
+    $country = mysqli_real_escape_string($con, $_POST['country']);
+    $tournament = mysqli_real_escape_string($con, $_POST['tournament']);
+
+    $query ="INSERT INTO players (name, surname, country, tournament_id) VALUES ('$name', '$surname', '$country', '$tournament') ";
+
+    $query_run = mysqli_query($con, $query);
+
+
+    if($query_run){
+
+        $_SESSION['message'] = "Player created successfully";
+        header("Location: player-create.php");
+        exit(0);
+    }
+    else{
+        $_SESSION['message'] = "Player not created";
+        header("Location: player-create.php");
+         exit(0);
+    
+    }
+
+}
 
 ?>

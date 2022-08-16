@@ -42,54 +42,49 @@ require 'dbcon.php';
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>Edit Tournament
-            <a href="index.php" class="btn btn-danger float-end">Back</a>
+          <h4>Add Player
+            <a href="players.php" class="btn btn-danger float-end">Back</a>
           </h4>
           <div class="card-body">
 
-          <?php
-            if(isset($_GET['id'])){
-                $tournament_id = mysqli_real_escape_string($con, $_GET['id']);
-                $query = "SELECT * FROM tournaments WHERE id='$tournament_id' ";
-                $query_run = mysqli_query($con, $query);
+            <form action="code.php" method="POST">
+              <div class="mb-3">
+                <label>Name:</label>
+                <input type="text" name="name" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label>Surname:</label>
+                <input type="text" name="surname" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label>Country:</label>
+                <input type="text" name="country" class="form-control">
+              </div>
+              <div class="mb-3">
 
-                if(mysqli_num_rows($query_run)>0){
+              <?php
+              $mysqli = NEW MySQLi ('localhost', 'root', '', 'tennis');
 
-                    $tournament = mysqli_fetch_array ($query_run);
-                    ?>
-                         <form action="code.php" method="POST">
-
-                         <input type="hidden" name="tournament_id" value="<?=$tournament['id']; ?>">
-
-                            <div class="mb-3">
-                                <label>Name:</label>
-                                <input type="text" name="name" value="<?= $tournament['name'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label>Location:</label>
-                                <input type="text" name="location" value="<?= $tournament['location'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label>Type:</label>
-                                <input type="text" name="type" value="<?= $tournament['type'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" name="update" class="btn btn-primary">Update</button>
-                            </div>
-
-                         </form>
-                    <?php
-
+              $resultSet=$mysqli->query("SELECT * FROM tournaments");
+              
+              ?>
+              <select name="tournament" id="tour">
+                <?php
+                while($rows = $resultSet->fetch_assoc()){
+                  $name=$rows['name'];
+                  $id=$rows['id'];
+                  echo "<option value='$id'>$name</option>";
                 }
-                else{
-                    echo "<h4>Not found</h4>";
-                }
-            }
-          ?>
+                ?>
+              </select>
+                 
+              </div>
 
+              <div class="mb-3">
+                <button type="submit" name="save_player" class="btn btn-primary">Save</button>
+              </div>
 
-
-           
+            </form>
           </div>
         </div>
       </div>

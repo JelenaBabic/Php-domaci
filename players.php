@@ -1,6 +1,6 @@
 <?php
-session_start();
-require 'dbcon.php';
+  session_start();
+  require 'dbcon.php';
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +9,6 @@ require 'dbcon.php';
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body> 
-
-
 
 <nav class="navbar navbar-expand navbar-dark bg-dark">
       <a class="navbar-brand" href="index.php">Tennis Tournaments</a>
@@ -33,69 +31,71 @@ require 'dbcon.php';
 <br>
 
 
-
 <div class="container">
 
 <?php include('message.php');?>
 
-  <div class="row">
+<div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>Edit Tournament
-            <a href="index.php" class="btn btn-danger float-end">Back</a>
+          <h4>Players
+            <a href="player-create.php" class="btn btn-primary float-end">Add new</a>
           </h4>
           <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Player's name</th>
+                  <th>Player's surname</th>
+                  <th>Player's country</th>
+                  <th>View</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $query = "SELECT * FROM players";
+                  $query_run = mysqli_query($con, $query);
 
-          <?php
-            if(isset($_GET['id'])){
-                $tournament_id = mysqli_real_escape_string($con, $_GET['id']);
-                $query = "SELECT * FROM tournaments WHERE id='$tournament_id' ";
-                $query_run = mysqli_query($con, $query);
+                  if(mysqli_num_rows($query_run)>0){
+                    foreach($query_run as $player){
+                      // echo $tournament['name'];
+                      ?>
+                        <tr>
+                           <td><?= $player['id'];?></td>
+                           <td><?= $player['name'];?></td>
+                           <td><?= $player['surname'];?></td>
+                           <td><?= $player['country'];?></td>
+                           <td><a href="player-view.php?id=<?=$player['id'];?>" class="btn btn-info btn-sm">View</a></td>
+                           <td><a href="player-edit.php?id=<?=$player['id'];?>"class="btn btn-success btn-sm">Edit</a></td>
+                           
+                           <form action="code.php" method="POST">
+                              <td><button type="submit" name="delete_player" value="<?= $player['id'];?>"class="btn btn-danger btn-sm">Delete</button></td>
+                           </form>
+                        </tr>
+                        <?php
 
-                if(mysqli_num_rows($query_run)>0){
+                    }
+                  }
+                  else{
+                    echo"<h5>No players found</h5>";
+                  }
 
-                    $tournament = mysqli_fetch_array ($query_run);
-                    ?>
-                         <form action="code.php" method="POST">
-
-                         <input type="hidden" name="tournament_id" value="<?=$tournament['id']; ?>">
-
-                            <div class="mb-3">
-                                <label>Name:</label>
-                                <input type="text" name="name" value="<?= $tournament['name'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label>Location:</label>
-                                <input type="text" name="location" value="<?= $tournament['location'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label>Type:</label>
-                                <input type="text" name="type" value="<?= $tournament['type'];?>" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" name="update" class="btn btn-primary">Update</button>
-                            </div>
-
-                         </form>
-                    <?php
-
-                }
-                else{
-                    echo "<h4>Not found</h4>";
-                }
-            }
-          ?>
-
-
-
-           
+                ?>
+              </tbody>
+            </table>
+            
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

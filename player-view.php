@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require 'dbcon.php';
 ?>
 
@@ -36,48 +36,75 @@ require 'dbcon.php';
 
 <div class="container">
 
-<?php include('message.php');?>
 
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4>Edit Tournament
-            <a href="index.php" class="btn btn-danger float-end">Back</a>
+          <h4>View Player details
+            <a href="players.php" class="btn btn-danger float-end">Back</a>
           </h4>
           <div class="card-body">
 
           <?php
             if(isset($_GET['id'])){
-                $tournament_id = mysqli_real_escape_string($con, $_GET['id']);
-                $query = "SELECT * FROM tournaments WHERE id='$tournament_id' ";
+                $player_id = mysqli_real_escape_string($con, $_GET['id']);
+                $query = "SELECT * FROM players WHERE id='$player_id' ";
                 $query_run = mysqli_query($con, $query);
 
                 if(mysqli_num_rows($query_run)>0){
 
-                    $tournament = mysqli_fetch_array ($query_run);
+                    $player = mysqli_fetch_array ($query_run);
                     ?>
-                         <form action="code.php" method="POST">
+                         
 
-                         <input type="hidden" name="tournament_id" value="<?=$tournament['id']; ?>">
+                         <input type="hidden" name="player_id" value="<?=$player['id']; ?>">
 
                             <div class="mb-3">
                                 <label>Name:</label>
-                                <input type="text" name="name" value="<?= $tournament['name'];?>" class="form-control">
+                                <p class="form-control">
+                                <?= $player['name'];?>
+                                </p>
                             </div>
                             <div class="mb-3">
-                                <label>Location:</label>
-                                <input type="text" name="location" value="<?= $tournament['location'];?>" class="form-control">
+                                <label>Surname:</label>
+                                <p class="form-control">
+                                <?= $player['surname'];?>
+                                </p>
                             </div>
                             <div class="mb-3">
-                                <label>Type:</label>
-                                <input type="text" name="type" value="<?= $tournament['type'];?>" class="form-control">
+                                <label>Country:</label>
+                                <p class="form-control">
+                                <?= $player['country'];?>
+                                </p>                            
                             </div>
                             <div class="mb-3">
-                                <button type="submit" name="update" class="btn btn-primary">Update</button>
-                            </div>
 
-                         </form>
+                            <div class="mb-3">
+                                <label>Tournament:</label>
+                                                          
+                          
+
+                                <?php
+                                $mysqli = NEW MySQLi ('localhost', 'root', '', 'tennis');
+
+                                $resultSet=$mysqli->query("SELECT * FROM tournaments");
+                  
+                                  while($rows = $resultSet->fetch_assoc()){
+                                    if($rows['id'] == $player['tournament_id']){
+                                      ?>
+                                      <p class="form-control">
+                                                          <?php echo $rows['name'];  ?>
+                                       </p>
+                                    <?php
+                                  }
+                                }
+                                  ?>
+                                 </div>
+                            </div>
+                            
+
+                        
                     <?php
 
                 }
