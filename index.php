@@ -41,6 +41,8 @@
         <div class="card-header">
           <h4>Tournaments
             <a href="tournament-create.php" class="btn btn-primary float-end">Add new</a>
+            <a href="index.php#ASC" class="btn btn-primary float-end" id="asc">ASC</a>
+            <a href="index.php#DESC" class="btn btn-primary float-end" id="desc">DESC</a>
           </h4>
           <div class="card-body">
             <table class="table table-bordered table-striped">
@@ -102,24 +104,27 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" ></script> 
 
 <script type="text/javascript">
+
 $(document).ready(function(){
 
+  $("#search").keyup(function(){
+    var txt = $(this).val();
+    if(txt != ""){
+      $.ajax({
+        url:"search.php",
+        method:"POST",
+        data : {
+          name:$(this).val(),
+      },
 
-  $("#search").keypress(function(){
-    console.log("aaaaaaaaaaaaaaabilosta   ",$("#search").val());
-    $.ajax({
-    url:"search.php",
-    type:"POST",
-    data : {
-      name:$("#search").val(),
-    },
-    success: function(data){
-      $("#tt").html(data);
-      }
-    })
+        success:function(data){
+          $("#tt").html(data);
+        }
+      });
+    }
   })
 })
 
