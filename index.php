@@ -45,11 +45,11 @@
             <a href="index.php#DESC" class="btn btn-primary float-end" id="desc">DESC</a>
           </h4>
           <div class="card-body">
-            <table class="table table-bordered table-striped">
+            <table id = "cc" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Tournament name</th>
+                  <th><a  class="column_sort" id="name" data-order="desc" href="#"></a>Tournament name </th>
                   <th>Location</th>
                   <th>Type of tournament</th>
                   <th>View</th>
@@ -59,7 +59,7 @@
               </thead>
               <tbody id="tt">
                 <?php
-                  $query = "SELECT * FROM tournaments";
+                  $query = "SELECT * FROM tournaments ORDER BY name DESC";
                   $query_run = mysqli_query($con, $query);
 
                   if(mysqli_num_rows($query_run)>0){
@@ -110,24 +110,36 @@
 
 $(document).ready(function(){
 
-  $("#search").keyup(function(){
-    var txt = $(this).val();
-    if(txt != ""){
-      $.ajax({
-        url:"search.php",
-        method:"POST",
-        data : {
-          name:$(this).val(),
-      },
+$(document).click( '#name', function(){
+ 
+  var column_name = $(this).attr("id");  
+  var order =document.getElementById("name").getAttribute("data-order");
+  var arrow = '';
+console.log('dd', order, column_name, document.getElementById("name").getAttribute("data-order"));
+  if(order == 'desc')  
+           {  
+                arrow = ' &#9650;';  
+           }  
+           else  
+           {  
+                arrow = '   &#9660;';  
+           }  
 
-        success:function(data){
-          $("#tt").html(data);
-        }
-      });
-    }
+    $.ajax({
+      url:"sort.php",
+      method:"POST",
+       data:{column_name:column_name, order:order},  
+                success:function(data)  
+                {  
+                     $('#cc').html(data);  
+                     document.getElementById("name").innerHTML =arrow;
+
+                }  
+
+    });
+  
   })
 })
-
 
 </script>
 

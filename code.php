@@ -26,9 +26,6 @@ if(isset($_POST['delete'])){
 }
 
 
-
-
-
 if(isset($_POST['update'])){
 
     $tournament_id =  mysqli_real_escape_string($con, $_POST['tournament_id']);
