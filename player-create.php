@@ -68,6 +68,7 @@ require 'dbcon.php';
               $resultSet=$mysqli->query("SELECT * FROM tournaments");
               
               ?>
+              <!-- combo-box -->
               <select name="tournament" id="tour">
                 <?php
                 while($rows = $resultSet->fetch_assoc()){

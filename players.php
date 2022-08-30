@@ -110,7 +110,6 @@
 $(document).ready(function(){
 
   $("#search").keyup(function(){
-    console.log("vfgdbehwj ");
     var txt = $(this).val();
     if(txt != ""){
       $.ajax({
